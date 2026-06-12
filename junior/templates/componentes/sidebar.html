@@ -1,0 +1,46 @@
+<aside class="app-sidebar bg-dark text-white shadow" data-bs-theme="dark">
+    <!-- Brand Logo -->
+    <div class="sidebar-brand border-bottom border-secondary py-3 text-center">
+        <a href="{% url 'dashboard' %}" class="brand-link text-white d-flex align-items-center justify-content-center gap-2">
+            <i class="bi bi-speedometer2 text-info fs-4"></i>
+            <span class="brand-text fw-bold">{{ global_ajustes.nombre_aplicacion|default:"Admin G1" }}</span>
+        </a>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <div class="sidebar-wrapper">
+        <nav class="mt-3">
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+                <li class="nav-item mb-1">
+                    <a href="{% url 'dashboard' %}" class="nav-link {% if active_page == 'dashboard' %}active{% endif %} text-white">
+                        <i class="nav-icon bi bi-speedometer2 text-info"></i>
+                        <p class="ms-2">Dashboard</p>
+                    </a>
+                </li>
+                
+                <li class="nav-header text-uppercase text-secondary small fw-bold px-3 py-2">Módulos de Gestión</li>
+
+                <li class="nav-item mb-1">
+                    <a href="{% url 'roles' %}" class="nav-link {% if active_page == 'roles' or 'roles' in request.path %}active{% endif %} text-white">
+                        <i class="nav-icon bi bi-shield-lock text-warning"></i>
+                        <p class="ms-2">Gestión de Roles</p>
+                    </a>
+                </li>
+
+                <li class="nav-item mb-1">
+                    <a href="{% url 'usuarios' %}" class="nav-link {% if active_page == 'usuarios' or 'usuarios' in request.path %}active{% endif %} text-white">
+                        <i class="nav-icon bi bi-people text-success"></i>
+                        <p class="ms-2">Gestión de Usuarios</p>
+                    </a>
+                </li>
+
+                <li class="nav-item mb-1">
+                    <a href="{% url 'ajustes' %}" class="nav-link {% if active_page == 'ajustes' or 'ajustes' in request.path %}active{% endif %} text-white">
+                        <i class="nav-icon bi bi-gear text-primary"></i>
+                        <p class="ms-2">Ajustes del Sistema</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>

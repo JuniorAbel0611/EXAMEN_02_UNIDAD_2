@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | {{ global_ajustes.nombre_aplicacion }}{% endblock %}
+
+{% block page_title %}Panel de Control (Dashboard){% endblock %}
+
+{% block content %}
+<!-- Info Boxes -->
+<div class="row">
+    <!-- Total Users Box -->
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box bg-primary text-white shadow-sm mb-4">
+            <span class="info-box-icon"><i class="bi bi-people-fill fs-3"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Usuarios Registrados</span>
+                <span class="info-box-number fs-4 fw-bold">{{ total_usuarios }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Roles Box -->
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box bg-success text-white shadow-sm mb-4">
+            <span class="info-box-icon"><i class="bi bi-shield-lock-fill fs-3"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Roles Definidos</span>
+                <span class="info-box-number fs-4 fw-bold">{{ total_roles }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Users Box -->
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box bg-info text-white shadow-sm mb-4">
+            <span class="info-box-icon"><i class="bi bi-person-check-fill fs-3"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Usuarios Activos</span>
+                <span class="info-box-number fs-4 fw-bold">{{ usuarios_activos }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Config Box -->
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box bg-warning text-dark shadow-sm mb-4">
+            <span class="info-box-icon"><i class="bi bi-gear-fill fs-3"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Paginación Activa</span>
+                <span class="info-box-number fs-4 fw-bold">{{ paginacion_defecto }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Welcome Widget & Recent Data -->
+<div class="row">
+    <!-- Welcome Card -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow border-0 h-100">
+            <div class="card-header card-header-gradient py-3">
+                <h5 class="card-title mb-0 fw-bold"><i class="bi bi-info-circle me-1"></i> Información del Sistema</h5>
+            </div>
+            <div class="card-body p-4 d-flex flex-column justify-content-between">
+                <div>
+                    <h4 class="fw-bold text-primary mb-3">{{ global_ajustes.nombre_aplicacion }}</h4>
+                    <p class="text-secondary leading-relaxed">
+                        Bienvenido al panel administrativo modular desarrollado en Django y acoplado con la plantilla
+                        AdminLTE 4.
+                        Desde aquí puedes administrar los perfiles de acceso (Roles), configurar cuentas de usuario
+                        asociadas a dichos roles y manejar las variables globales de comportamiento de tu plataforma.
+                    </p>
+                </div>
+                <div class="mt-4 pt-3 border-top">
+                    <span class="text-secondary small d-block mb-1"><strong>Estado del sitio:</strong></span>
+                    {% if global_ajustes.estado_sitio %}
+                    <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> En Línea / Activo</span>
+                    {% else %}
+                    <span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle-fill me-1"></i> Modo
+                        Mantenimiento</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Logs or Settings preview -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow border-0 h-100">
+            <div class="card-header card-header-gradient py-3">
+                <h5 class="card-title mb-0 fw-bold"><i class="bi bi-journal-text me-1"></i> Logs de Mantenimiento</h5>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-secondary small mb-2">Logs históricos de operaciones o notas del administrador:</p>
+                <div class="bg-light p-3 rounded-3 border border-secondary-subtle"
+                    style="min-height: 140px; font-family: monospace;">
+                    {% if global_ajustes.logs_mantenimiento %}
+                    {{ global_ajustes.logs_mantenimiento|linebreaks }}
+                    {% else %}
+                    <span class="text-muted italic">No hay logs registrados en este momento.</span>
+                    {% endif %}
+                </div>
+                <div class="mt-3 text-end">
+                    <a href="{% url 'ajustes' %}" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-pencil-square me-1"></i> Ir a Ajustes
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Lists preview -->
+<div class="row">
+    <!-- Recent Users -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow border-0">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold text-dark"><i class="bi bi-people me-1"></i> Últimos Usuarios</h5>
+                <a href="{% url 'usuarios' %}" class="btn btn-xs btn-primary">Ver Todos</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th class="px-3">Nombre</th>
+                                <th>Rol</th>
+                                <th class="text-center">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for u in recent_users %}
+                            <tr>
+                                <td class="px-3">{{ u.nombre }}</td>
+                                <td>{{ u.rol.descripcion }}</td>
+                                <td class="text-center">
+                                    {% if u.estado %}
+                                    <span
+                                        class="badge bg-success-subtle text-success border border-success-subtle">Activo</span>
+                                    {% else %}
+                                    <span
+                                        class="badge bg-danger-subtle text-danger border border-danger-subtle">Inactivo</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center text-muted py-3">No hay usuarios registrados.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Roles -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow border-0">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold text-dark"><i class="bi bi-shield-lock me-1"></i> Últimos Roles</h5>
+                <a href="{% url 'roles' %}" class="btn btn-xs btn-primary">Ver Todos</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th class="px-3">Descripción</th>
+                                <th class="text-center">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in recent_roles %}
+                            <tr>
+                                <td class="px-3">{{ r.descripcion }}</td>
+                                <td class="text-center">
+                                    {% if r.estado %}
+                                    <span
+                                        class="badge bg-success-subtle text-success border border-success-subtle">Activo</span>
+                                    {% else %}
+                                    <span
+                                        class="badge bg-danger-subtle text-danger border border-danger-subtle">Inactivo</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="2" class="text-center text-muted py-3">No hay roles registrados.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Rol | {{ global_ajustes.nombre_aplicacion }}{% endblock %}
+
+{% block page_title %}Eliminar Rol{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-6">
+        {% if usuarios_con_rol > 0 %}
+            <!-- Deletion Blocked Alert Card -->
+            <div class="card card-outline card-danger shadow border-0">
+                <div class="card-header bg-danger text-white py-3">
+                    <h5 class="card-title mb-0 fw-bold"><i class="bi bi-shield-slash-fill me-1"></i> Operación Bloqueada por Integridad</h5>
+                </div>
+                <div class="card-body p-4 text-center">
+                    <i class="bi bi-exclamation-octagon text-danger fs-1 d-block mb-3"></i>
+                    <h4 class="fw-bold mb-3 text-secondary">No se puede eliminar el rol</h4>
+                    <p class="text-secondary leading-relaxed mb-4">
+                        El rol <strong>"{{ rol.descripcion }}"</strong> está asignado a <strong>{{ usuarios_con_rol }}</strong> usuario(s).
+                        Para garantizar la integridad y consistencia de los datos en el sistema, no es posible borrar este rol hasta que reasignes o elimines los usuarios correspondientes.
+                    </p>
+                    <a href="{% url 'roles' %}" class="btn btn-primary px-4 shadow-sm">
+                        <i class="bi bi-arrow-left me-1"></i> Volver al Listado
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <!-- Normal Deletion Confirmation Card -->
+            <div class="card card-outline card-danger shadow border-0">
+                <div class="card-header bg-danger text-white py-3">
+                    <h5 class="card-title mb-0 fw-bold"><i class="bi bi-exclamation-triangle-fill me-1"></i> Confirmar Eliminación</h5>
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-trash-fill text-danger fs-1 d-block mb-3"></i>
+                        <h4 class="fw-bold mb-3 text-secondary">¿Estás seguro de eliminar este rol?</h4>
+                        <p class="text-secondary mb-4">
+                            Estás a punto de eliminar permanentemente el rol <strong>"{{ rol.descripcion }}"</strong>. Esta acción no se puede deshacer.
+                        </p>
+                    </div>
+                    <div class="card-footer bg-light p-3 d-flex justify-content-between">
+                        <a href="{% url 'roles' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-danger px-4">
+                            <i class="bi bi-trash me-1"></i> Sí, Eliminar Rol
+                        </button>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

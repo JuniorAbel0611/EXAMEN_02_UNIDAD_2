@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ action }} Rol | {{ global_ajustes.nombre_aplicacion }}{% endblock %}
+
+{% block page_title %}{{ action }} Rol{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card shadow border-0">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title mb-0 fw-bold text-secondary">Formulario de Rol</h5>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="card-body p-4">
+                    <!-- Text field description -->
+                    <div class="mb-3">
+                        <label for="{{ form.descripcion.id_for_label }}" class="form-label fw-semibold text-secondary">
+                            {{ form.descripcion.label }}
+                        </label>
+                        {{ form.descripcion }}
+                        {% if form.descripcion.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.descripcion.errors|first }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Boolean field check -->
+                    <div class="form-check form-switch mb-3">
+                        {{ form.estado }}
+                        <label class="form-check-label fw-semibold text-secondary ms-1" for="rolEstado">
+                            ¿Rol Activo?
+                        </label>
+                        {% if form.estado.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.estado.errors|first }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-footer bg-light p-3 d-flex justify-content-between">
+                    <a href="{% url 'roles' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-success px-4">
+                        <i class="bi bi-check-circle me-1"></i> Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

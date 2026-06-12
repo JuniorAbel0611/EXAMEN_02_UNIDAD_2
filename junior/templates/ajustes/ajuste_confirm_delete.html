@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Ajustes | {{ global_ajustes.nombre_aplicacion }}{% endblock %}
+
+{% block page_title %}Eliminar Ajustes{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-6">
+        {% if total_ajustes <= 1 %}
+            <!-- Deletion Blocked Alert Card -->
+            <div class="card card-outline card-danger shadow border-0">
+                <div class="card-header bg-danger text-white py-3">
+                    <h5 class="card-title mb-0 fw-bold"><i class="bi bi-shield-slash-fill me-1"></i> Operación Denegada</h5>
+                </div>
+                <div class="card-body p-4 text-center">
+                    <i class="bi bi-exclamation-octagon text-danger fs-1 d-block mb-3"></i>
+                    <h4 class="fw-bold mb-3 text-secondary">No se puede eliminar la configuración</h4>
+                    <p class="text-secondary leading-relaxed mb-4">
+                        El perfil de ajustes <strong>"{{ ajuste.nombre_aplicacion }}"</strong> es la única configuración del sistema registrada en la base de datos.
+                        El sistema requiere obligatoriamente al menos una configuración activa para funcionar y renderizar correctamente el portal administrativo.
+                    </p>
+                    <a href="{% url 'ajustes' %}" class="btn btn-primary px-4 shadow-sm">
+                        <i class="bi bi-arrow-left me-1"></i> Volver a Ajustes
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <!-- Normal Deletion Confirmation Card -->
+            <div class="card card-outline card-danger shadow border-0">
+                <div class="card-header bg-danger text-white py-3">
+                    <h5 class="card-title mb-0 fw-bold"><i class="bi bi-exclamation-triangle-fill me-1"></i> Confirmar Eliminación</h5>
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-trash-fill text-danger fs-1 d-block mb-3"></i>
+                        <h4 class="fw-bold mb-3 text-secondary">¿Estás seguro de eliminar este perfil de ajustes?</h4>
+                        <p class="text-secondary mb-4">
+                            Estás a punto de eliminar el perfil <strong>"{{ ajuste.nombre_aplicacion }}"</strong>. Esta acción quitará estas configuraciones permanentemente.
+                        </p>
+                    </div>
+                    <div class="card-footer bg-light p-3 d-flex justify-content-between">
+                        <a href="{% url 'ajustes' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-danger px-4">
+                            <i class="bi bi-trash me-1"></i> Sí, Eliminar Ajustes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Roles | {{ global_ajustes.nombre_aplicacion }}{% endblock %}
+
+{% block page_title %}Gestión de Roles{% endblock %}
+
+{% block page_actions %}
+<a href="{% url 'rol_create' %}" class="btn btn-primary shadow-sm d-inline-flex align-items-center gap-2">
+    <i class="bi bi-plus-circle"></i>
+    <span>Nuevo Rol</span>
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="card shadow border-0">
+    <div class="card-header bg-white py-3">
+        <h5 class="card-title mb-0 fw-bold text-secondary">Listado de Roles</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="px-4" style="width: 80px;">ID</th>
+                        <th>Descripción del Rol</th>
+                        <th class="text-center" style="width: 150px;">Estado</th>
+                        <th class="text-end px-4" style="width: 200px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in roles %}
+                        <tr>
+                            <td class="px-4 fw-bold text-secondary">{{ r.id }}</td>
+                            <td>{{ r.descripcion }}</td>
+                            <td class="text-center">
+                                {% if r.estado %}
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5"><i class="bi bi-check-circle me-1"></i>Activo</span>
+                                {% else %}
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2.5 py-1.5"><i class="bi bi-x-circle me-1"></i>Inactivo</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end px-4">
+                                <a href="{% url 'rol_edit' r.id %}" class="btn btn-warning btn-sm shadow-sm d-inline-flex align-items-center gap-1 me-1 text-white">
+                                    <i class="bi bi-pencil-square"></i> Editar
+                                </a>
+                                <a href="{% url 'rol_delete' r.id %}" class="btn btn-danger btn-sm shadow-sm d-inline-flex align-items-center gap-1">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-4">
+                                <i class="bi bi-info-circle fs-3 d-block mb-2 text-secondary"></i>
+                                No se encontraron roles registrados. ¡Crea el primero usando el botón superior!
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
